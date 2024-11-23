@@ -1,0 +1,157 @@
+#!/usr/bin/python
+import smbus
+import RPi.GPIO as GPIO
+import time
+from datetime import datetime
+import urllib.request
+import os
+from solarpi_motores_lib import *
+from solarpi_SolarPath_lib import *
+
+ChipConversor = 0x48
+cmdConvertirAD = 0x45
+# srotacion = 0
+# sinclinacion = 0
+# vEjeRotacion = 0
+# vEjeCabezeo = 0
+# oEjeRotacion = 200    #Valor objetivo rotacion (20-200)
+# oEjeCabezeo = 40     #Valor objetiuvo cabeceo (40-100)
+
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(11, GPIO.OUT)  # cable azul: Cabeceo Abajo.
+# GPIO.setup(13, GPIO.OUT)  # cable naranja: Cabeceo Arriba.
+# GPIO.setup(15, GPIO.OUT)  # cable amarillo: Rotacion anti-horario
+# GPIO.setup(16, GPIO.OUT)  # cable verde: Rotacion horario
+
+# GPIO.output(11, True)
+# GPIO.output(13, True)
+# GPIO.output(16, True)
+# GPIO.output(15, True)
+
+bus = smbus.SMBus(1)
+time.sleep(1)
+
+
+def leer_comandos():
+    with open("comandos.txt", "r+") as archivo:
+        # Queremos leer la primera linea del fichero.
+        comando = archivo.readline()
+        resultado = comando.strip()
+
+    with open("comandos.txt", "r+") as archivo:
+        # Guardamos el fichero pero sin la primera linea.
+        comandos = archivo.readlines()
+        archivo.seek(0)
+        archivo.truncate()
+        for linea in comandos[1:]:
+            archivo.write(linea)
+
+    return resultado
+
+
+
+def lee_sensores_analogicos():
+    global vEjeCabezeo
+    global vEjeRotacion
+    bus.write_byte(ChipConversor,cmdConvertirAD)
+    time.sleep(0.1)
+    vAn0 = bus.read_byte(ChipConversor)
+    vAn1 = bus.read_byte(ChipConversor)
+    vEjeCabezeo = bus.read_byte(ChipConversor)
+    vEjeRotacion = bus.read_byte(ChipConversor)
+
+
+try: 
+  modo_automatico = True
+  while True:
+
+    fechaleida = datetime.now()
+    frase = " Traza "
+    mes_actual = fechaleida.month
+    print("    Este es el mes actual:", mes_actual)
+    dia_actual = fechaleida.day
+    print("    Este es el dia actual:", dia_actual)
+    hora_actual = fechaleida.hour
+    print("    Esta es la hora actual:", hora_actual)
+
+    el_comando = leer_comandos()
+
+    if el_comando.startswith("MANUAL"):
+        modo_automatico = False
+    if el_comando.startswith("AUTOMATICO"):
+        modo_automatico = True
+
+    if modo_automatico == True: 
+        print("    Estamos en modo...... Automatico")
+        oEjeRotacion = Cal_obj_rotacion(hora_actual, dia_actual, mes_actual)
+        oEjeCabezeo = Cal_obj_cabeceo(hora_actual, dia_actual, mes_actual)
+
+    else :
+        print("    Estamos en modo...... Manual")
+
+        if el_comando.startswith("MoverRotacion"):
+            # Vamos a partir el valor de la instrucion en dos quedandonos con la parte nuemrica
+            _, valor = el_comando.split()
+            oEjeRotacion = int(valor)
+            print("    --> Moveremos el eje de Rotacion")
+
+        if el_comando.startswith("MoverCabeceo"):
+            # Vamos a partir el valor de la instrucion en dos quedandonos con la parte nuemrica
+            _, valor = el_comando.split()
+            oEjeCabezeo = int(valor)
+            print("    --> Moveremos el eje de cabeceo")
+
+    lee_sensores_analogicos()
+    print("    El valor del sensor del EjeRotacion  es: ", vEjeRotacion , "\tobjetivo: ", oEjeRotacion)
+    print("    El valor del sensor del EjeCabeceo   es: ", vEjeCabezeo , "\tobjetivo: ", oEjeCabeceo)
+
+    se_han_movido_las_placas = False
+
+    if vEjeRotacion < (oEjeRotacion - 5) :
+        print(" Girando las placas en sentido horario...")
+        rotacion_horario()
+        se_han_movido_las_placas = True
+        frase = frase + "Gira.horario "
+
+    if vEjeRotacion > (oEjeRotacion + 5) :
+        print(" Girando las plachas en sentido anti-horario...")
+        rotacion_antihorario()
+        se_han_movido_las_placas = True
+        frase = frase + "Gir.anithora "
+
+    if vEjeCabezeo < (oEjeCabezeo - 3) :
+        print(" Levantando las placas...")
+        cabeceo_arriba()
+        se_han_movido_las_placas = True
+        frase = frase + "A "
+
+    if vEjeCabezeo > (oEjeCabezeo + 3) :
+        print(" Bajando las placas...")
+        cabeceo_abajo()
+        se_han_movido_las_placas = True
+        frase = frase + "B "
+    
+    if not se_han_movido_las_placas:
+        print(" Parece que las placas estan en su sitio.")
+        print(" Vamos a esperar 5 segundos para ver si hay que corregir...")
+        frase = frase + "Nada que hacer "
+        with open('logSolarPiV4.txt', 'a') as archivo_log:
+            registro = f"{fechaleida}{frase}\n"
+            archivo_log.write(registro)
+        time.sleep(2)
+    else:
+        frase = frase + "Movimiento terminado "
+        with open('logSolarPiV4.txt', 'a') as archivo_log:
+            registro = f"{fechaleida}{frase}\n"
+            archivo_log.write(registro)
+
+    print("\n\b--------------- Repetimos!\n\n")
+  # Fin del while True
+
+except KeyboardInterrupt:
+    print ("\n\n\t\t AAAUUGGHH!!.... Eso ha dolido!")
+finally:
+    print ("\t\t Cerrando correctamente el puerot GPIO.\n\n")
+    GPIO.cleanup()
+
+# Fin del programa.
