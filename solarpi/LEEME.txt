@@ -1,0 +1,39 @@
+
+ Se ha creado unos fichero para definir el servicio:
+      /lib/systemd/system/solarpi.service
+      /lib/systemd/sytemc/solarpi-getcommands.service
+
+ Si se modifican debe hacere una recarga del sitema de systemctl
+     systemctl daemon-reload
+
+ Estos son los comandos para habilitar y deshabilitar los servicios
+ en el arranque del sistema.
+      systemctl enable solarpi.service
+      systemctl disable solarpi.service
+      systemctl enable solarpi-getcommands.service
+      systemctl disable solarpi-getcommnads.service
+
+ Estos son los comandos para arrancar y parar los servicios manualmente.
+      systemctl start solarpi.service
+      systemctl stop solarpi.service
+      systemctl start solarpi-getcommands.serivce
+      systemctl stop solarpi-getcommnads.service
+
+ Estos son los ficheros donde los servicios escriben lo que hacen.
+      solarpi-service.log
+      solarpi-service.err
+      solarpi-getcommands.log
+      solarpi-getcommands.err
+      activity.log
+
+ Tambien se puede usar el la bitacora del sistema (journtalctl9
+      journalctl -u solarpi-service
+      journalctl -u solarpi-getcommands
+ 
+ El servicio esta configurado para ejecutar el script
+      solarpi-service.py
+      solarpi-getcommands.py
+   Pero, para poder hacer un cambio de veriones sencillo, en realidad 
+   son unos enlaces simbolico a los ficheros finales.
+
+

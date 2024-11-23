@@ -1,0 +1,64 @@
+  File "/home/solarpi/solarpi-service.py", line 8
+    from lib/motores import *
+            ^
+SyntaxError: invalid syntax
+/home/solarpi/lib/motores.py:6: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(11, GPIO.OUT)  # cable azul: Cabeceo Abajo.
+/home/solarpi/lib/motores.py:7: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(13, GPIO.OUT)  # cable naranja: Cabeceo Arriba.
+/home/solarpi/lib/motores.py:8: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(15, GPIO.OUT)  # cable amarillo: Rotacion anti-horario
+/home/solarpi/lib/motores.py:9: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(16, GPIO.OUT)  # cable verde: Rotacion horario
+/home/solarpi/lib/motores.py:6: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(11, GPIO.OUT)  # cable azul: Cabeceo Abajo.
+/home/solarpi/lib/motores.py:7: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(13, GPIO.OUT)  # cable naranja: Cabeceo Arriba.
+/home/solarpi/lib/motores.py:8: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(15, GPIO.OUT)  # cable amarillo: Rotacion anti-horario
+/home/solarpi/lib/motores.py:9: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(16, GPIO.OUT)  # cable verde: Rotacion horario
+/home/solarpi/lib/motores.py:6: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(11, GPIO.OUT)  # cable azul: Cabeceo Abajo.
+/home/solarpi/lib/motores.py:7: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(13, GPIO.OUT)  # cable naranja: Cabeceo Arriba.
+/home/solarpi/lib/motores.py:8: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(15, GPIO.OUT)  # cable amarillo: Rotacion anti-horario
+/home/solarpi/lib/motores.py:9: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(16, GPIO.OUT)  # cable verde: Rotacion horario
+/home/solarpi/lib/motores.py:6: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(11, GPIO.OUT)  # cable azul: Cabeceo Abajo.
+/home/solarpi/lib/motores.py:7: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(13, GPIO.OUT)  # cable naranja: Cabeceo Arriba.
+/home/solarpi/lib/motores.py:8: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(15, GPIO.OUT)  # cable amarillo: Rotacion anti-horario
+/home/solarpi/lib/motores.py:9: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(16, GPIO.OUT)  # cable verde: Rotacion horario
+/home/solarpi/lib/motores.py:6: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(11, GPIO.OUT)  # cable azul: Cabeceo Abajo.
+/home/solarpi/lib/motores.py:7: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(13, GPIO.OUT)  # cable naranja: Cabeceo Arriba.
+/home/solarpi/lib/motores.py:8: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(15, GPIO.OUT)  # cable amarillo: Rotacion anti-horario
+/home/solarpi/lib/motores.py:9: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(16, GPIO.OUT)  # cable verde: Rotacion horario
+Traceback (most recent call last):
+  File "/home/solarpi/solarpi-service.py", line 179, in <module>
+    urllib.request.urlopen(url, 'estado.txt')
+  File "/usr/lib/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.9/urllib/request.py", line 514, in open
+    req = meth(req)
+  File "/usr/lib/python3.9/urllib/request.py", line 1277, in do_request_
+    raise TypeError(msg)
+TypeError: POST data should be bytes, an iterable of bytes, or a file object. It cannot be of type str.
+Traceback (most recent call last):
+  File "/home/solarpi/solarpi-service.py", line 179, in <module>
+    urllib.request.urlopen(url, 'estado.txt')
+  File "/usr/lib/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.9/urllib/request.py", line 514, in open
+    req = meth(req)
+  File "/usr/lib/python3.9/urllib/request.py", line 1277, in do_request_
+    raise TypeError(msg)
+TypeError: POST data should be bytes, an iterable of bytes, or a file object. It cannot be of type str.
